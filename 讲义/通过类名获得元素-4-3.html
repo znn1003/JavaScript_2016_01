@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+<ul>
+<li class="select">一</li>
+<li class="abc a-b-c a_b_c">二</li>
+<li class="a b c ">三</li>
+<li class="select a b c ">一</li>
+<li>二</li>
+<li>三</li>
+<li class="a b c d select">一</li>
+<li class="a b c d">二</li>
+<li>三</li>
+<li class="select          a-b-c">一</li>
+<li class="a b select c d e">二</li>
+<li>三</li>
+<li class="select a b c d">一</li>
+<li>二</li>
+<li>三</li>
+<li class="select">一</li>
+<li  class="a b c d">二</li>
+<li>三</li>
+<li class="aselectb a-select-b">三</li>
+</ul>
+</body>
+</html>
+<script>
+//做为小测试题
+var eles=document.getElementsByTagName("*");
+function getElesByClass(str){
+	str=str.replace(/^ +| +$/g,"");
+	var aClassName=str.split(/ +/);
+	var eles=document.getElementsByTagName("*");
+	for(var i=0;i<aClassName.length;i++){
+		//eles=byClass(aClassName,eles);
+		var a=[];//准备放筛选结果的
+		var reg=new RegExp("(^| )"+aClassName[i]+"( |$)","g");//lastIndex的修改
+		
+		/(^| )b( |$)/g;//只要是加了g，就要考虑lastIndex的感受
+		li1 "b a c"
+		li2 "b c a"
+		
+		reg=/pattern/g
+		for(var j=0;j<eles.length;j++){
+			if(reg.test(eles[j].className)){
+				a.push(eles[j]);	
+			}
+				
+		}
+		eles=a;//相当于byClass方法中的return a这一步	
+	}
+	return eles;
+	
+}
+
+for(var i=0;i<eles.length;i++){
+	eles[i].style.backgroundColor="red";	
+}
+</script>
