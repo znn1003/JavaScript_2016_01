@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<style type="text/css">
+.tabbedPannels{ width:550px; overflow:hidden;}
+.tabbedPannels ul.tabGroup{ list-style:none; margin:0; padding:0;}
+.tabbedPannels li.tab{ width:80px; height:2em; font-size:16px; margin-left:10px; float:left; background:#0FF;text-align:center; line-height:2em; cursor:pointer; }
+.tabbedPannels div.contentGroup{}
+.tabbedPannels div.content{ height:400px; background:#ccc; clear:both; display:none; padding:10px; }
+.tabbedPannels li.tab.selectedTab{ background:#ccc; font-weight:bold;}
+.tabbedPannels div.content.selectedContent{ display:block;}
+.promoted{ color:red;}
+</style>
+</head>
+
+<body>
+<div class="tabbedPannels" >
+	<ul class="tabGroup">
+    	<li class="tab selectedTab">选项一</li>
+        <li id="li2"  class="tab">选项二</li>
+        <li  class="tab promoted">选项三</li>
+        <li  class="tab">选项四</li>
+        <li  class="tab">选项四</li>
+    </ul>
+    <div class="contentGroup">
+    <div class="content selectedContent">内容一</div>
+    
+     <div class="content">内容二
+     	<ul><li>JS</li><li>node</li><li>HTML5</li><li>CSS3</li></ul>
+     
+     </div>
+      <div class="content">内容三</div>
+      <div class="content">内容四</div>
+    </div>
+</div>
+</body>
+</html>
+<script src="jquery-1.9.1.js"></script>
+<script>
+//以下三行代码一个作用，都是在文档中把类是既是tab，又是content的元素找出来
+alert($(".tab.content").length);
+document.getElementsByClassName("tab content");
+document.querySelectorAll(".tab.content");
+
+//下面有空格
+alert($(".tab .content").length);//查找.tab下的后代元素中类名叫content的元素
+
+alert($(".tab>.content").length);////查找.tab下的子元素中类名叫content的元素
+
+$("*")//和document.getElementsByTagName("*")相同
+$("#li2+li").css("font-size","36px").css({background:"red",border:"10px blue solid"}).next().hide(5000,function(){//回调方法
+	$(this).show(5000);
+	
+	}).end().fadeOut(5000);//前边的css方法是设置一个CSS属性的值，后边是批量设置CSS属性的值
+	//hide隐藏，show显示，这两个方法的参数如果有数字，则这两个方法变成了动画，参数是动画执行的时间（单位是毫秒）
+	//end是指把被操作元素的往上回找一级
+	
+	
+	//以下是过滤选择器
+	$("li:first");//获得所有li中唯一的第一个li
+	$("li:even").css("background","orange");//获得li中索引为偶数的元素，从0开始的
+	$("li:not(#li2)").css("font-size","24px");//把所有的li中，id是li2的元素排除掉
+	$("li:eq(2)").css("color","green");//找所有的li中的索引为2的元素
+</script>

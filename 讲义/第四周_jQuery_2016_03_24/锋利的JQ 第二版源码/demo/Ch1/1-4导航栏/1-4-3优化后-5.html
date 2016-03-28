@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>导航栏</title>
+<link rel="stylesheet" href="css/default.css" type="text/css" />
+
+<!-- 引入 jQuery -->
+
+<style type="text/css">
+#menu{ width:150px; height:300px; background:#ccc; position:absolute; }
+</style>
+
+</head>
+<body>
+<p>第三步：优化后：</p>
+
+<div class="box">
+	<ul class="menu">
+		<li class="level1">
+			<a href="#none">衬衫</a>
+			<ul class="level2">
+				<li><a href="#none">短袖衬衫</a></li>
+				<li><a href="#none">长袖衬衫</a></li>
+				<li><a href="#none">短袖T恤</a></li>
+				<li><a href="#none">长袖T恤</a></li>
+			</ul>
+		</li>
+		<li class="level1">
+			<a href="#none">卫衣</a>
+			<ul class="level2">
+				<li><a href="#none">开襟卫衣</a></li>
+				<li><a href="#none">套头卫衣</a></li>
+				<li><a href="#none">运动卫衣</a></li>
+				<li><a href="#none">童装卫衣</a></li>
+			</ul>
+		</li>
+		<li class="level1">
+			<a href="#none">裤子</a>
+			<ul class="level2">
+				<li><a href="#none">短裤</a></li>
+				<li><a href="#none">休闲裤</a></li>
+				<li><a href="#none">牛仔裤</a></li>
+				<li><a href="#none">免烫卡其裤</a></li>
+			</ul>
+		</li>
+	</ul>
+</div>
+
+</body>
+</html>
+<script src="../../../../../第三周周末选项卡和DOM库_20160320/DOM.js"></script>
+<script>
+/*
+	第一步：找到level1下边的子元素a，然后绑定事件
+		通过DOM.getElesByClass方法找到所有的level1元素，然后再把各个level1元素下的子元素a找出来，然后再绑定事件
+	
+	第二步：找到this下的ul，让其显示
+		就是this的弟弟，这个相对简单
+	
+	第三步：找到this的父节点的兄弟节点中的ul子元素，让其隐藏
+		找到this的父节点，然后再找到父节点的兄弟节点，然后再把每一个兄弟节点中的ul子节点找出来（循环），然后再把这些ul子节点设为display:none
+	
+	
+*/
+
+
+
+
+</script>

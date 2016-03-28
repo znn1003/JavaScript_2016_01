@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>导航栏</title>
+<link rel="stylesheet" href="css/default.css" type="text/css" />
+
+<!-- 引入 jQuery -->
+
+<style type="text/css">
+#menu{ width:150px; height:300px; background:#ccc; position:absolute; }
+</style>
+
+</head>
+<body>
+<p>第三步：优化后：</p>
+
+<div class="box">
+	<ul class="menu">
+		<li class="level1">
+			<a href="#none">衬衫</a>
+			<ul class="level2">
+				<li><a href="#none">短袖衬衫</a></li>
+				<li><a href="#none">长袖衬衫</a></li>
+				<li><a href="#none">短袖T恤</a></li>
+				<li><a href="#none">长袖T恤</a></li>
+			</ul>
+		</li>
+		<li class="level1">
+			<a href="#none">卫衣</a>
+			<ul class="level2">
+				<li><a href="#none">开襟卫衣</a></li>
+				<li><a href="#none">套头卫衣</a></li>
+				<li><a href="#none">运动卫衣</a></li>
+				<li><a href="#none">童装卫衣</a></li>
+			</ul>
+		</li>
+		<li class="level1">
+			<a href="#none">裤子</a>
+			<ul class="level2">
+				<li><a href="#none">短裤</a></li>
+				<li><a href="#none">休闲裤</a></li>
+				<li><a href="#none">牛仔裤</a></li>
+				<li><a href="#none">免烫卡其裤</a></li>
+			</ul>
+		</li>
+	</ul>
+</div>
+
+</body>
+</html>
+<script src="../../../../../第三周周末选项卡和DOM库_20160320/DOM.js"></script>
+<script>
+var level1s=DOM.getElesByClass("level1");
+var oAs=[];
+for(var i=0;i<level1s.length;i++){
+	oAs.push(DOM.children(level1s[i],"a")[0]);	
+}
+for(var i=0;oAs.length;i++){
+	oAs[i].onclick=function(){
+		
+		this.nextElementSibling;
+		var oUl=DOM.next(this);
+		oUl.style.display="block";
+		
+		//下边让其它菜单项中的ul隐藏
+		
+		//先找到所有的其它菜单项中的ul（子菜单显示项）
+		var otherLis=DOM.siblings(this.parentNode);
+		//var otherUls=[];
+		for(var i=0;i<otherLis.length;i++){
+			//otherUls.push(DOM.children(otherLis[i],"ul")[0]);	
+			DOM.children(otherLis[i],"ul")[0].style.display="none";
+		}
+		
+		/*
+		//然后再让这些ul隐藏
+		for(var i=0;i<otherUls.length;i++){
+			otherUls[i].style.display="none";	
+		}
+		*/
+		
+		return false;
+	}
+}
+
+
+
+
+</script>
