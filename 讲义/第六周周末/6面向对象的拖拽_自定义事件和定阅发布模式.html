@@ -1,0 +1,185 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<style type="text/css">
+#div1{ width:100px; height:100px; position:absolute; top:100px; left:100px; background:red; cursor:move; -webkit-user-select:none;}
+</style>
+</head>
+
+<body>
+<div id="div1">
+
+</div>
+</body>
+</html>
+<script src="event.js"></script>
+<script>
+
+function EventEmitter(){}
+EventEmitter.prototype.on=function(type,fn){
+	if(!this["selfEvent"+type])this["selfEvent"+type]=[];
+	var a=this["selfEvent"+type];
+	for(var i=0;i<a.length;i++){
+	    if(a[i]==fn){return}
+	}
+	a.push(fn)
+}
+
+EventEmitter.prototype.run=function(type,e){
+	var a=this["selfEvent"+type];
+	if(a){
+		for(var i=0;i<a.length;){
+			if(typeof a[i]=="function"){
+				a[i].call(this,e);
+				i++;
+				}else{
+					a.splice(i,1);
+				}
+			}
+	}
+}
+
+EventEmitter.prototype.off=function(type,fn){
+	var a=this["selfEvent"+type];
+	if(a&&a.length){
+		for(var i=0;i<a.length;i++){
+			if(a[i]==fn){
+				a[i]=null;
+				return;
+			}
+		}
+	}
+	
+}
+
+
+function Drag(ele){
+	this//
+	this.ele=ele;//首先把要拖拽的对象保存到实例的ele属性上
+	this.x=null;
+	this.y=null;
+	this.mx=null;
+	this.my=null;//把保存盒子和鼠标初始的属性都定义在实例上，而非被拖拽的元素上
+	/*on(this.ele,"mousedown",this.down);
+	
+	on(ele,"mousedown",this.down);//查找方法的定义的地址时，没有this的事。当方法执行的时候，才会有this的事
+	down,this.down;
+	var fn=this.down;
+	on(ele,"mousedown",fn);*/
+	
+	this.DOWN=processThis(this.down,this);
+	this.MOVE=processThis(this.move,this);
+	this.UP=processThis(this.up,this);
+	on(ele,"mousedown",this.DOWN);
+	
+}
+
+Drag.prototype=new EventEmitter;//继承
+Drag.prototype.down=function(e){
+	
+	this.x=this.ele.offsetLeft;
+	this.y=this.ele.offsetTop;
+	this.mx=e.pageX;
+	this.my=e.pageY;
+	if(this.ele.setCapture){
+		this.ele.setCapture();
+		on(this.ele,"mousemove",this.MOVE);
+		on(this.ele,"mouseup",this.UP);			
+	}else{
+		on(document,"mousemove",this.MOVE);
+		on(document,"mouseup",this.UP);	
+	}
+	e.preventDefault();	
+	this.run("abcd",e);
+}
+Drag.prototype.move=function(e){
+	this.ele.style.left=e.pageX-this.mx+this.x+"px";
+	this.ele.style.top=e.pageY-this.my+this.y+"px";
+	this.run("efg",e);
+}
+Drag.prototype.up=function(e){
+	if(this.ele.releaseCapture){
+		this.ele.releaseCapture();
+		off(this.ele,"mousemove",this.MOVE);
+		off(this.ele,"mouseup",this.UP);
+	}else{
+		off(document,"mousemove",this.MOVE);
+		off(document,"mouseup",this.UP);
+	}
+	this.run("xyz",e);
+}
+
+//new Drag(div1);//变量有没有没关系
+var obj=new Drag(div1);
+obj.on("abcd",clearEffect);
+obj.on("efg",getSpeed);
+obj.on("xyz",fly);
+obj.on("xyz",drop);
+
+/*
+	自已发布的“拖拽开始”的事件和mousedown事件有什么区别呢？我直接用mousedown事件不是挺好嘛？为什么还要小题大作自己再整个“拖拽开始”事件呢？
+
+*/
+
+function clearEffect(){
+	clearTimeout(this.flyTimer);
+	clearTimeout(this.dropTimer);	
+}
+
+function getSpeed(e){
+	if(this.prevPosi){
+		this.flySpeed=e.pageX-this.prevPosi;
+		this.prevPosi=e.pageX;	
+	}else{
+		this.prevPosi=e.pageX;
+	}
+}
+
+
+function fly(){
+	this.flySpeed*=.98;//this是类的实例，
+	var current=this.ele.offsetLeft+this.flySpeed;
+	var r=(document.documentElement.clientWidth||document.body.clientWidth)-this.ele.offsetWidth;//盒子运动能到达的最右边
+	if(current>=r){
+		this.ele.style.left=r+"px";
+		this.flySpeed*=-1;
+	}if(current<=0){
+		this.ele.style.left=0;
+		this.flySpeed*=-1;
+	}else{
+		this.ele.style.left=current+"px";
+	}
+	if(Math.abs(this.flySpeed)>=0.5){
+		this.flyTimer=window.setTimeout(processThis(fly,this),20);	
+	}
+}
+
+function drop(){
+	if(this.dropSpeed){
+		this.dropSpeed+=9;
+	}else{
+		this.dropSpeed=9;
+	}
+	this.dropSpeed*=.98;
+	var bottom=(document.documentElement.clientHeight||document.body.clientHeight)-this.ele.offsetHeight;//运动能到达的最下边
+	var current=this.dropSpeed+this.ele.offsetTop;//当前运动到达的位置
+	if(current>bottom){
+		this.ele.style.top=bottom+"px";
+		this.dropSpeed*=-1;//调头
+		this.flag++;	
+	}else{
+			this.ele.style.top=current+"px";
+			this.flag=0;
+	}
+	if(this.flag<2){
+		this.dropTimer=window.setTimeout(processThis(drop,this),20);	
+	}
+	
+}
+
+
+
+
+</script>
